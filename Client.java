@@ -1,6 +1,7 @@
 import java.net.*;
 
 public class Client {
+    private static final int PORT = 25690;
 
     public static void main(String[] args) {
         DatagramSocket socket;
@@ -8,10 +9,9 @@ public class Client {
         try {
             socket = new DatagramSocket();
             String message = "Testing...";
-            byte [] b = message.getBytes();
+            byte [] buff = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
-            int serverSocket = 6780;
-            DatagramPacket request = new DatagramPacket(b, b.length, host, serverSocket);
+            DatagramPacket request = new DatagramPacket(buff, buff.length, host, PORT);
             socket.send(request);
 
             byte [] buffer = new byte[1000];
