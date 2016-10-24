@@ -2,15 +2,17 @@
  * @Authors: Gage Myers and Charles Duso
  */
 
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 /**
+ * Server
  *
- *
- *
+ * Class that will run a datagram server and call threads
+ * to allow for multiple clients
  */
 public class Server {
     private static final int PORT = 25678;
@@ -18,9 +20,12 @@ public class Server {
         new Server().runServer();
     }
 
+    // Run the server and create threads as needed
     private void runServer() throws SocketException{
         try {
-            DatagramSocket dataSocket = new DatagramSocket(PORT);
+            InetAddress host = InetAddress.getLocalHost();
+
+            DatagramSocket dataSocket = new DatagramSocket(PORT, host);
 
             System.out.println("Server Running...");
 
@@ -34,6 +39,8 @@ public class Server {
         }
     }
 
+    // A server thread that will create a new thread
+    // and connect a client
     private class ServerThread extends Thread {
         DatagramSocket socket;
 
@@ -47,6 +54,7 @@ public class Server {
 
                 byte[] buffer = new byte[1000];
 
+                /* Requests a DatagramPacket from the client and then responds to the client */
                 while (true) {
                     DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                     socket.receive(request);
